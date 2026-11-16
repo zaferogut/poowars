@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PooWars – Davet</title>
+<meta property="og:title" content="PooWars'ta odama gel! 💩">
+<meta property="og:description" content="Linke dokun, oyunu aç ve direkt odaya katıl.">
+<meta property="og:image" content="icon.png">
+<link rel="icon" href="icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root { --sky:#bfe6ff; --pink:#ff7aa8; --green:#5fcf6b; --brown:#5a3a2e; --cream:#fff6e6; }
+  * { box-sizing:border-box; }
+  body { margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:16px;
+         background:var(--sky); font-family:'Fredoka',system-ui,sans-serif; color:var(--brown); text-align:center; }
+  .card { background:var(--cream); border-radius:28px; padding:28px 22px; width:100%; max-width:380px;
+          box-shadow:0 8px 0 rgba(90,58,46,.18); }
+  img { width:96px; height:96px; border-radius:22px; }
+  h1 { font-size:28px; margin:12px 0 4px; }
+  p { margin:6px 0; font-weight:500; }
+  .code { font-size:44px; font-weight:700; letter-spacing:4px; color:var(--pink); margin:10px 0 18px; }
+  .btn { display:block; width:100%; padding:16px; border-radius:20px; font:700 22px 'Fredoka',sans-serif;
+         color:#fff; text-decoration:none; background:var(--green); box-shadow:0 6px 0 #3d9a48; margin-bottom:14px; }
+  .btn:active { transform:translateY(4px); box-shadow:0 2px 0 #3d9a48; }
+  .stores a { display:inline-block; margin:4px 6px; color:var(--brown); font-weight:700; }
+  .small { font-size:14px; opacity:.75; }
+  .hidden { display:none; }
+</style>
+</head>
+<body>
+<div class="card">
+  <img src="icon.png" alt="PooWars">
+  <h1>PooWars'ta odama gel!</h1>
+  <div id="with-code">
+    <p>Oda kodu</p>
+    <div class="code" id="code">------</div>
+    <a class="btn" id="open" href="#">OYUNU AÇ</a>
+    <p class="small">Açılmazsa oyunda <b>Arkadaşlarla oyna → Katıl</b> deyip kodu yaz.</p>
+  </div>
+  <p id="no-code" class="hidden">Davet linki eksik görünüyor. Arkadaşından kodu iste.</p>
+  <p class="small" style="margin-top:16px">Oyun yüklü değil mi?</p>
+  <div class="stores">
+    <a id="ios" href="#">App Store</a> · <a id="android" href="#">Google Play</a>
+  </div>
+</div>
+<script>
+  // Store links: fill in once the game is published.
+  var IOS_URL = "", ANDROID_URL = "https://play.google.com/store/apps/details?id=com.zafogames.poowars";
+  var p = new URLSearchParams(location.search);
+  var code = ((p.get("c") || location.hash.slice(1) || "").match(/\d{6}/) || [""])[0];
+  var stores = document.querySelector(".stores");
+  document.getElementById("ios").href = IOS_URL || "#";
+  document.getElementById("android").href = ANDROID_URL;
+  if (!IOS_URL) document.getElementById("ios").style.display = "none";
+  if (!code || code[0] === "0") {
+    document.getElementById("with-code").classList.add("hidden");
+    document.getElementById("no-code").classList.remove("hidden");
+  } else {
+    document.getElementById("code").textContent = code.slice(0, 3) + " " + code.slice(3);
+    var app = "poowars://join/" + code;
+    document.getElementById("open").href = app;
+    if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) setTimeout(function () { location.href = app; }, 300);
+  }
+</script>
+</body>
+</html>
